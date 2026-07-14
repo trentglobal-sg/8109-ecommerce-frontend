@@ -1,4 +1,12 @@
+import ProductCard from "./ProductCard"
+import { useState } from "react"
+
 export default function App() {
+
+  // creae a new state variable for the componnet
+  // useState(false) means the default for state is `false`
+  const [showNavBar, setShowNavBar] = useState(false);
+
   return (<>
     {/* Navbar */}
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -10,10 +18,13 @@ export default function App() {
           aria-controls="navbarNav"
           aria-expanded="false"
           aria-label="Toggle navigation"
+          onClick={()=>{
+            setShowNavBar(!showNavBar);
+          }}
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
+        <div className={`collapse navbar-collapse ${showNavBar ? "show": ""}`} id="navbarNav">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
               <a className="nav-link active" aria-current="page" href="#">Home</a>
@@ -44,60 +55,30 @@ export default function App() {
       <h2 className="text-center mb-4">Featured Products</h2>
       <div className="row">
         <div className="col-md-3 mb-4">
-          <div className="card">
-            <img
-              src="https://picsum.photos/id/20/300/200"
-              className="card-img-top"
-              alt="Product 1"
-            />
-            <div className="card-body">
-              <h5 className="card-title">Product 1</h5>
-              <p className="card-text">$19.99</p>
-              <a href="#" className="btn btn-primary">Add to Cart</a>
-            </div>
-          </div>
+          <ProductCard name="Laptop" 
+            imageUrl="https://picsum.photos/id/8/300/200"
+            price={2000}
+          />
         </div>
         <div className="col-md-3 mb-4">
-          <div className="card">
-            <img
-              src="https://picsum.photos/id/1/300/200"
-              className="card-img-top"
-              alt="Product 2"
-            />
-            <div className="card-body">
-              <h5 className="card-title">Product 2</h5>
-              <p className="card-text">$29.99</p>
-              <a href="#" className="btn btn-primary">Add to Cart</a>
-            </div>
-          </div>
+          <ProductCard name="Screwdriver"
+            imageUrl="https://picsum.photos/id/20/300/200"
+            price={18.99}
+          />
         </div>
         <div className="col-md-3 mb-4">
-          <div className="card">
-            <img
-              src="https://picsum.photos/id/26/300/200"
-              className="card-img-top"
-              alt="Product 3"
-            />
-            <div className="card-body">
-              <h5 className="card-title">Product 3</h5>
-              <p className="card-text">$39.99</p>
-              <a href="#" className="btn btn-primary">Add to Cart</a>
-            </div>
-          </div>
+          <ProductCard 
+            name="ACME Anvil"
+            imageUrl="https://picsum.photos/id/21/300/200"
+            price={199.99}
+          />
         </div>
         <div className="col-md-3 mb-4">
-          <div className="card">
-            <img
-              src="https://picsum.photos/id/96/300/200"
-              className="card-img-top"
-              alt="Product 4"
-            />
-            <div className="card-body">
-              <h5 className="card-title">Product 4</h5>
-              <p className="card-text">$49.99</p>
-              <a href="#" className="btn btn-primary">Add to Cart</a>
-            </div>
-          </div>
+          <ProductCard 
+            name="Soundproof Headphones"
+            imageUrl="https://picsum.photos/id/22/300/200"
+            price={230.0}
+          />
         </div>
       </div>
     </main>
