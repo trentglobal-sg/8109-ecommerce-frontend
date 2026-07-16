@@ -1,9 +1,12 @@
 import ProductCard from "./ProductCard"
 import { useCart } from "./CartStore"
+import { useFlashMessage} from "./FlashMessageStore";
+import { Link } from "wouter";
 
 export default function ProductPage() {
 
     const { addToCart} = useCart();
+    const { showMessage } = useFlashMessage();
 
     const products = [
         {
@@ -47,7 +50,11 @@ export default function ProductPage() {
                     price={p.price}
                     onAddToCart={()=>{
                         addToCart(p);
-                     
+                        // showMessage("Product added to shopping cart successfully", "success");
+                        showMessage(<div>
+                            <p>Product added to shopping cart successfully</p>
+                            <Link href="/cart" className="btn btn-primary btn-sm">Go to Cart</Link>
+                        </div>, "success");
                     }}
                 />
                         </div>
