@@ -6,6 +6,7 @@ import Navbar from "./Navbar";
 import HomePage from "./HomePage";
 import RegisterPage from "./RegisterPage";
 import ProductPage from "./ProductPage";
+import ShoppingCart from "./ShoppingCart";
 
 // imports for wouter
 import { Route, Switch} from 'wouter'
@@ -27,6 +28,7 @@ export default function App() {
       <Route path="/" component={HomePage}/>
       <Route path="/products" component={ProductPage}/>
       <Route path="/register" component={RegisterPage}/>
+      <Route path="/cart" component={ShoppingCart}/>
     </Switch>
 
     <footer className="bg-dark text-white text-center py-3">

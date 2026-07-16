@@ -37,10 +37,13 @@ export default function Navbar() {
                             <Link className={`nav-link ${location === "/" ? "active" : ""}`} aria-current="page" href="/">Home</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className={`nav-link ${location === "/products" ? "active": ""}`} href="/products">Products</Link>
+                            <Link className={`nav-link ${location === "/products" ? "active" : ""}`} href="/products">Products</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className={`nav-link ${location === "/register" ? "active": ""}`} href="/register">Register</Link>
+                            <Link className={`nav-link ${location === "/register" ? "active" : ""}`} href="/register">Register</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className={`nav-link ${location === "/cart" ? "active" : ""}`} href="/cart">Cart</Link>
                         </li>
                     </ul>
                 </div>

@@ -1,6 +1,10 @@
 import ProductCard from "./ProductCard"
+import { useCart } from "./CartStore"
 
 export default function ProductPage() {
+
+    const { addToCart} = useCart();
+
     const products = [
         {
             "id": 1,
@@ -34,14 +38,18 @@ export default function ProductPage() {
             <h1>Our Products</h1>
             <div className="row">
             {
-                products.map(function (p) {
-                    return (
-                        <div key={p.id} className="col-md-3 mb-4">
-                            <ProductCard
-                                imageUrl={p.imageUrl}
-                                name={p.name}
-                                price={p.price}
-                            />
+    products.map(function (p) {
+        return (
+            <div key={p.id} className="col-md-3 mb-4">
+                <ProductCard
+                    imageUrl={p.imageUrl}
+                    name={p.name}
+                    price={p.price}
+                    onAddToCart={()=>{
+                        addToCart(p);
+                     
+                    }}
+                />
                         </div>
                     )
                 })
