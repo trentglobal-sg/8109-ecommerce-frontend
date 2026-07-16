@@ -1,0 +1,35 @@
+.flash {
+    position: fixed;
+    width: calc(99vw - 20px);
+    z-index: 100;
+    top: 5px;
+    left: 10px;
+    animation-name: fadeInWaitFadeOut;
+    animation-duration: 6s;
+}
+
+@keyframes fadeInWaitFadeOut {
+
+    /* 0%   →  3s  : fade in   */
+    0% {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+
+    33.33% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    /* 3s   →  6s  : wait (stay visible) */
+    66.66% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    /* 6s   →  9s  : fade out  */
+    100% {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+}

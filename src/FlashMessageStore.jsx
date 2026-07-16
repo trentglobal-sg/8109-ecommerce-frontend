@@ -16,6 +16,16 @@ export const useFlashMessage = () => {
         setFlashMessage({
             message, type
         });
+
+        // after 3 seconds, call clearMessage automatically
+        setTimeout(clearMessage, 6500);
+    }
+
+    const clearMessage = () => {
+        setFlashMessage({
+            "message": "",
+            "type":"info"
+        })
     }
 
     // whatever we retun from a hook function can be used by
