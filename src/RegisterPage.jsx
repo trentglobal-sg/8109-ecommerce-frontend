@@ -1,6 +1,7 @@
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useLocation } from 'wouter';
+import { useFlashMessage } from './FlashMessageStore';
 
 const validationSchema = Yup.object({
     name: Yup.string().required("Name is required").min(2, "The name must be at least 2 characters"),
@@ -15,6 +16,7 @@ const validationSchema = Yup.object({
 export default function RegisterPage() {
 
     const [, setLocation] = useLocation();
+    const { showMessage} = useFlashMessage();
 
     // API endpoint that returns all the possible marketing preferences
     // Important: Make sure the ID numbers match the database
@@ -58,6 +60,9 @@ export default function RegisterPage() {
             console.log("The form has finished processing");
             formikHelpers.setSubmitting(false);
             // TODO: have an if statement to see if the form has been submitted properly
+            
+            // show the flash message
+            showMessage("You have signed up successfully", "success")
             setLocation("/");
         }, 3000)
 
