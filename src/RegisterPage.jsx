@@ -129,7 +129,7 @@ export default function RegisterPage() {
                                             type="radio"
                                             name="salutation"
                                             id="mr"
-                                            value="Mr"
+                                            value="rr"
                                         />
                                         <label className="form-label"
                                             htmlFor="mr"
@@ -141,7 +141,7 @@ export default function RegisterPage() {
                                             type="radio"
                                             name="salutation"
                                             id="mrs"
-                                            value="Mrs"
+                                            value="mrs"
                                         />
                                         <label className="form-label"
                                             htmlFor="mrs"
@@ -153,11 +153,23 @@ export default function RegisterPage() {
                                             type="radio"
                                             name="salutation"
                                             id="ms"
-                                            value="Ms"
+                                            value="ms"
                                         />
                                         <label className="form-label"
                                             htmlFor="ms"
                                         >Ms.</label>
+                                    </div>
+                                      <div className="form-check form-check-inline">
+                                        <Field
+                                            className="form-check-input"
+                                            type="radio"
+                                            name="salutation"
+                                            id="dr"
+                                            value="dr"
+                                        />
+                                        <label className="form-label"
+                                            htmlFor="dr"
+                                        >Dr.</label>
                                     </div>
                                 </div>
                             </div>
