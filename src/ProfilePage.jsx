@@ -3,79 +3,84 @@ import * as Yup from 'yup';
 import { useLocation } from 'wouter';
 import { useFlashMessage } from './FlashMessageStore';
 import axios from 'axios';
+import { useJWT } from './UserStore';
+import { useEffect, useState } from 'react';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const validationSchema = Yup.object({
     name: Yup.string().required("Name is required").min(2, "The name must be at least 2 characters"),
     email: Yup.string().email("Invalid email address").required("Email is required"),
-    password: Yup.string().required("Password is required").min(6, "Must be at least 6 characters long"),
-    confirmPassword: Yup.string().oneOf([
-        Yup.ref("password"),
-        null
-    ], "The passowrd must match").required("Please confirm your password")
+
 })
 
-export default function RegisterPage() {
+const marketingPreferences = [
+    {
+        "id": 1,
+        "name": "Email Updates"
+    },
+    {
+        "id": 2,
+        "name": "SMS promotions"
+    },
+    {
+        "id": 3,
+        "name": "WhatsApp"
+    }
+]
+
+export default function ProfilePage() {
 
     const [, setLocation] = useLocation();
     const { showMessage } = useFlashMessage();
 
-    // API endpoint that returns all the possible marketing preferences
-    // Important: Make sure the ID numbers match the database
-    const marketingPreferences = [
-        {
-            "id": 1,
-            "name": "Email Updates"
-        },
-        {
-            "id": 2,
-            "name": "SMS promotions"
-        },
-        {
-            "id": 3,
-            "name": "WhatsApp"
-        }
-    ]
+    // get the JWT of the current logged in user
+    const { jwt } = useJWT();
 
-    // the initialValues array is to provide the default values for the form
-    const initalValues = {
+    // store the initial values of the form as a react state
+    const [initialValues, setInitialValues] = useState({
         "name": "",
         "email": "",
-        "password": "",
-        "confirmPassword": "",
         "salutation": "Mr",
         "marketingPreferences": [],
         "country": ""
-    }
+    })
 
-    // handle submit is called when the user submits the form
-    // it takes two arguments
-    // arugment 1 - the values of the form fields
-    // arugment 2 - helper object that let us manipulate the form
+    // create an effect to load the user's details when the component renders for the first time
+    useEffect(() => {
+        const fetchUser = async () => {
+            const response = await axios.get(API_URL + "/users/me", {
+                headers: {
+                    Authorization: 'Bearer ' + jwt
+                }
+            })
+            setInitialValues(response.data);
+        }
+        fetchUser();
+    }, [jwt]); // <-- whenever the JWT changes, run the effect again
+
     const handleSubmit = async (values, formikHelpers) => {
-        // indicate that the form is in process of being submitted
-        formikHelpers.setSubmitting(true);
-
-        // have to process the register form by sending to the backend
         try {
-            const response = await axios.post(API_URL + "/users/register", values);
-
-            // show the flash message
-            showMessage("You have signed up successfully", "success")
-            setLocation("/");
-
+            await axios.put(API_URL + "/users/me", values, {
+                headers: {
+                    Authorization: 'Bearer ' + jwt
+                }
+            });
+            showMessage("User updated successfully");
         } catch (e) {
-            showMessage("There is an error submitting", "danger")
-        } finally {
-            formikHelpers.setSubmitting(false);
+            console.error(e);
+            showMessage("Unable to update user details");
         }
     }
 
     return <>
         <div className="container">
-            <h1>Register</h1>
-            <Formik initialValues={initalValues} onSubmit={handleSubmit} validationSchema={validationSchema}>
+            <h1>Profile</h1>
+            <Formik initialValues={initialValues} 
+                    onSubmit={handleSubmit} 
+                    validationSchema={validationSchema}
+                    enableReinitialize
+            >
                 {
                     formik => (
                         <Form>
@@ -99,28 +104,6 @@ export default function RegisterPage() {
                                     name="email"
                                 />
                                 <ErrorMessage name="email" component="div" className="text-danger" />
-                            </div>
-
-                            {/* Password */}
-                            <div className="mb-3">
-                                <label htmlFor="password" className="form-label">Password:</label>
-                                <Field type="password"
-                                    id="password"
-                                    className="form-control"
-                                    name="password"
-                                />
-                                <ErrorMessage name="password" component="div" className="text-danger" />
-                            </div>
-
-                            {/* Confirm Password */}
-                            <div className="mb-3">
-                                <label htmlFor="confirmPassword" className="form-label">Confirm Password:</label>
-                                <Field type="password"
-                                    id="password"
-                                    className="form-control"
-                                    name="confirmPassword"
-                                />
-                                <ErrorMessage name="confirmPassword" component="div" className="text-danger" />
                             </div>
 
                             {/* Salutation */}
