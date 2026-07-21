@@ -47,11 +47,9 @@ export default function Navbar() {
                         <li className="nav-item">
                             <Link className={`nav-link ${location === "/cart" ? "active" : ""}`} href="/cart">Cart</Link>
                         </li>
-<<<<<<< HEAD
                         <li className="nav-item">
                             <Link className={`nav-link ${location === "/chat" ? "active" : ""}`} href="/chat">Chat</Link>
                         </li>
-=======
                         {!jwt && <li className="nav-item">
                             <Link className={`nav-link ${location === "/login" ? "active" : ""}`} href="/login">Login</Link>
                         </li>}
@@ -68,7 +66,6 @@ export default function Navbar() {
                             </li>
                         }
 
->>>>>>> 06-shopping-cart
                     </ul>
                 </div>
             </div>
