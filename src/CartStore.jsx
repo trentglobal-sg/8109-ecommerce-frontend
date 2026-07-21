@@ -1,4 +1,8 @@
+import axios from 'axios';
 import { atom, useAtom } from 'jotai';
+import { useJWT } from './UserStore';
+import { useFlashMessage } from './FlashMessageStore';
+
 
 const initialCart = [
     // {
@@ -23,8 +27,27 @@ const initialCart = [
 
 const cartAtom = atom(initialCart);
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export const useCart = () => {
     const [cart, setCart] = useAtom(cartAtom);
+    const { jwt } = useJWT();
+    const { showFlashMessage} = useFlashMessage();
+
+    const fetchCart = async () => {
+        try {
+            const response = await axios.get(API_URL + '/cart', {
+                headers: {
+                    Authorization: 'Bearer ' + jwt
+                }
+            });
+            setCart(response.data);
+
+        } catch (e) {
+            showFlashMessage("Unable to load shopping cart", "danger");
+            console.error(e.message);
+        }
+    }
 
     const getCartTotal = () => {
         let total = 0;
@@ -62,6 +85,7 @@ export const useCart = () => {
             // 3. replace the clone in the atom
             const cloned = [...cart, newCartItem];
             setCart(cloned);
+            updateCart(cloned);
         } else {
             // find the existing cart item with the product id we are looking for
             const existingCartItem = cart[existingProductIndex];
@@ -72,6 +96,7 @@ export const useCart = () => {
             const cloned = cart.with(existingProductIndex, existingCartItem);
             // replace the array in the atom
             setCart(cloned)
+            updateCart(cloned);
         }
 
 
@@ -88,6 +113,7 @@ export const useCart = () => {
             const cloned = cart.toSpliced(indexToDelete, 1);
             // 4. replace the clone into the atom
             setCart(cloned);
+            updateCart(cloned);
         }
     }
 
@@ -112,10 +138,51 @@ export const useCart = () => {
 
         // 5. replace the cart atom with the cloned
         setCart(clonedCart);
+        updateCart(clonedCart);
+    }
+
+    /**
+     * 
+     * @param {[
+     * {
+     *   product_id: number,
+     *   quantity: number,
+     *   name: string,
+     *   imageUrl: string,
+     *   price: float
+     * }
+     * ]} updatedCart cart atom that has been updated
+     */
+    const updateCart = async (updatedCart) => {
+        const cartItems = updatedCart.map(function(item){
+            return {
+                product_id: item.product_id,
+                quantity: item.quantity
+            }
+        });
+
+       try {
+         await axios.put(
+             API_URL + "/cart",
+             {
+                 cartItems
+             },
+             {
+                 headers: {
+                     Authorization: "Bearer " + jwt
+                 }
+             }
+         );
+
+       } catch (error) {
+            showFlashMessage("Error updating shopping cart", danger);
+            console.error(error.message);
+       }
     }
 
     return {
-        cart, getCartTotal, addToCart, removeFromCart, modifyQuantity
+        cart, getCartTotal, addToCart, removeFromCart, 
+        modifyQuantity, fetchCart
     }
 
 }
