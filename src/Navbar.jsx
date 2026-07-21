@@ -1,11 +1,13 @@
 import { useState } from "react"
 import { Link, useLocation } from "wouter";
+import { useJWT } from "./UserStore";
 
 export default function Navbar() {
 
     // creae a new state variable for the componnet
     // useState(false) means the default for state is `false`
     const [showNavBar, setShowNavBar] = useState(false);
+    const { jwt } = useJWT();
 
     // useLocation is a hook from wouter
     // when called, it will return an array of two items
@@ -45,9 +47,28 @@ export default function Navbar() {
                         <li className="nav-item">
                             <Link className={`nav-link ${location === "/cart" ? "active" : ""}`} href="/cart">Cart</Link>
                         </li>
+<<<<<<< HEAD
                         <li className="nav-item">
                             <Link className={`nav-link ${location === "/chat" ? "active" : ""}`} href="/chat">Chat</Link>
                         </li>
+=======
+                        {!jwt && <li className="nav-item">
+                            <Link className={`nav-link ${location === "/login" ? "active" : ""}`} href="/login">Login</Link>
+                        </li>}
+
+                        {
+                            jwt && <li className="nav-item">
+                               <Link className={`nav-link ${location === "/profile" ? "active" : ""}`} href="/profile">Profile</Link>
+                            </li>
+                        }
+
+                        {
+                            jwt && <li className="nav-item">
+                                <Link className='nav-link'>Logout</Link>
+                            </li>
+                        }
+
+>>>>>>> 06-shopping-cart
                     </ul>
                 </div>
             </div>
