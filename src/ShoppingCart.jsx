@@ -23,9 +23,9 @@ export default function ShoppingCart() {
             const response = await axios.post(API_URL + "/checkout", {}, {
                 headers: {
                     Authorization: "Bearer " + jwt
-                }
+                }   
             });
-            window.location = response.url;
+            window.location = response.data.url;
 
         } catch (e) {
             showFlashMessage("Unable to checkout", "danger");
